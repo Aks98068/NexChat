@@ -52,20 +52,6 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("DATABASE_URL is required")
 	}
 
-	emailVerificationTTL, err := parseTTL(
-		"EMAIL_VERIFICATION_TTL",
-		24*time.Hour,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	redisURL := strings.TrimSpace(os.Getenv("REDIS_URL"))
-
-	if redisURL == "" {
-		return nil, fmt.Errorf("REDIS_URL is required")
-	}
-
 	corsAllowedOriginsRaw := strings.TrimSpace(
 		os.Getenv("CORS_ALLOWED_ORIGINS"),
 	)
@@ -199,12 +185,6 @@ func Load() (*Config, error) {
 		apiURL = "http://localhost:3000"
 	}
 
-	emailURL := os.Getenv("EMAIL_URL")
-
-	if emailURL == "" {
-		emailURL = "http://localhost:3000"
-	}
-
 	jwtAccessSecret := os.Getenv("JWT_ACCESS_SECRET")
 
 	if jwtAccessSecret == "" {
@@ -254,7 +234,6 @@ func Load() (*Config, error) {
 		JWTAccessTTLMinutes:     jwtAccessTTLMinutes,
 		JWTRefreshTTLDays:       jwtRefreshTTLDays,
 		PasswordResetTTLMinutes: passwordResetTTLMinutes,
-		EmailVerificationTTL:    emailVerificationTTL,
 
 		CORSAllowedOrigins:   corsAllowedOrigins,
 		CORSAllowCredentials: corsAllowCredentials,
